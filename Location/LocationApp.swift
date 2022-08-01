@@ -7,11 +7,13 @@
 
 import SwiftUI
 
+let APP_NAME = "My Location"
+
 @main
 struct LocationApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
         }
     }
 }
