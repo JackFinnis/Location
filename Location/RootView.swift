@@ -15,13 +15,13 @@ struct RootView: View {
             .sheet(isPresented: $vm.showWelcomeView) {
                 WelcomeView(vm: vm)
             }
-            .alert("Allow Access", isPresented: $vm.error) {
+            .alert("Access Denied", isPresented: $vm.showError) {
                 Button("Cancel") {}
-                Button("Open Settings", role: .cancel) {
+                Button("Settings") {
                     vm.openSettings()
                 }
             } message: {
-                Text("\(APP_NAME) needs access to your location to show your speed and altitude. Please go to the Settings app and allow access to be able to use the app.")
+                Text("\(NAME) needs access to your location to show your speed and altitude. Please go to the Settings app and allow access to be able to use the app.")
             }
     }
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-let APP_NAME = "My Location"
+let NAME = "My Location"
 
 @main
 struct LocationApp: App {

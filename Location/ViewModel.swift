@@ -11,8 +11,9 @@ import UIKit
 
 class ViewModel: NSObject, ObservableObject {
     @Published var location = CLLocation()
+    @Published var previousLocation = CLLocation()
     @Published var status: CLAuthorizationStatus
-    @Published var error = false
+    @Published var showError = false
     @Published var showWelcomeView = false
     @Published var metric = UserDefaults.standard.bool(forKey: "unit") { didSet {
         UserDefaults.standard.set(metric, forKey: "unit")
@@ -31,7 +32,7 @@ class ViewModel: NSObject, ObservableObject {
         }
     }
     
-    func speedUnit() -> String { metric ? "kmh" : "mph" }
+    var speedUnit: String { metric ? "kmh" : "mph" }
     func speed(from mps: Double) -> String {
         if mps == -1 { return "-" }
         let formatter = NumberFormatter()
@@ -42,9 +43,8 @@ class ViewModel: NSObject, ObservableObject {
         return formatter.string(from: NSNumber(value: number))!
     }
     
-    func altitudeUnit() -> String { metric ? "m" : "ft" }
+    var altitudeUnit: String { metric ? "m" : "ft" }
     func altitude(from metres: Double) -> String {
-        if metres == 0 { return "-" }
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = 0
@@ -55,7 +55,7 @@ class ViewModel: NSObject, ObservableObject {
     
     func buttonTapped() {
         if status == .denied {
-            error = true
+            showError = true
         } else {
             manager.requestWhenInUseAuthorization()
         }
@@ -66,16 +66,17 @@ class ViewModel: NSObject, ObservableObject {
     }
     
     func openSettings() {
-        let URL = URL(string: UIApplication.openSettingsURLString)!
-        UIApplication.shared.open(URL)
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            UIApplication.shared.open(url)
+        }
     }
 }
 
 extension ViewModel: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        previousLocation = location
         location = locations.first!
         showWelcomeView = false
-        print(String(describing: location))
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
@@ -83,7 +84,7 @@ extension ViewModel: CLLocationManagerDelegate {
         if status == .authorizedWhenInUse {
             startUpdatingLocation()
         } else if status == .denied {
-            error = true
+            showError = true
         }
     }
 }

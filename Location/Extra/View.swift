@@ -17,16 +17,19 @@ extension View {
     }
     
     func number() -> some View {
-        self.font(.system(size: 70))
+        self
+            .font(.system(size: 70))
     }
     
     func unit() -> some View {
-        self.font(.system(size: 50))
+        self
+            .font(.system(size: 50))
             .foregroundColor(.secondary)
     }
     
     func icon() -> some View {
-        self.font(.system(size: 40))
+        self
+            .font(.system(size: 40))
             .foregroundColor(.accentColor)
     }
 }

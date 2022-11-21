@@ -19,7 +19,7 @@ struct WelcomeView: View {
                 .cornerRadius(15)
                 .padding()
                 .horizontallyCentred()
-            Text("Welcome to \(APP_NAME)")
+            Text("Welcome to\n\(NAME)")
                 .bold()
                 .font(.largeTitle)
                 .horizontallyCentred()
@@ -43,5 +43,27 @@ struct WelcomeView: View {
         }
         .padding()
         .interactiveDismissDisabled()
+    }
+}
+
+struct WelcomeRow: View {
+    let image: String
+    let title: String
+    let description: String
+    
+    var body: some View {
+        HStack {
+            Image(systemName: image)
+                .font(.title)
+                .foregroundColor(.accentColor)
+                .frame(width: 50, height: 50)
+            VStack(alignment: .leading) {
+                Text(title)
+                    .font(.headline)
+                Text(description)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding(.vertical)
     }
 }
